@@ -1,4 +1,5 @@
 ﻿using GenericRepositoryWithSpecificationExample.Core.Models;
+using GenericRepositoryWithSpecificationExample.Core.SpecQueries;
 using GenericRepositoryWithSpecificationExample.Infrastructure.GenericRepo;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,10 @@ namespace GenericRepositoryWithSpecificationExample.Controllers
         }
 
         [HttpGet("products")]
-        public async Task<IActionResult> GetAllProducts()
+        public IActionResult GetAllProducts()
         {
-            var result = await _productRepository.GetAll();
+            var specification = new GetProductsWithCategorySpecification();
+            var result = _productRepository.FindWithSpecificationPattern(specification);
             return Ok(result);
         }
     }

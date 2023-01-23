@@ -1,5 +1,6 @@
 ﻿using GenericRepositoryWithSpecificationExample.Core.Data;
 using GenericRepositoryWithSpecificationExample.Core.Models;
+using GenericRepositoryWithSpecificationExample.Infrastructure.Spec;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -12,6 +13,11 @@ namespace GenericRepositoryWithSpecificationExample.Infrastructure.GenericRepo
         public GenericRepository(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public IEnumerable<T> FindWithSpecificationPattern(ISpecification<T> specification)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
         }
 
         public async Task<IReadOnlyList<T>> GetAll()
